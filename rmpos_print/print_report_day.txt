@@ -1,0 +1,733 @@
+<?php
+require("../outright_print/fpdf.php"); 
+$date = $_GET['date'];
+$date1 = $_GET['date1'];
+$type = $_GET['type'];
+$store= $_GET['store'];
+if($type=='delivered_items'){
+	
+if($store==''){
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where del_date between '$date' and '$date1' and cancel=0 order by store asc,del_date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date From :  $date         Date To :  $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Delivered Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(20,7,"Delivered Date",1,0,"C");
+	$pdf->Cell(50,7,"Store Name",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(20,7,"Packing List",1,0,"C");
+	$pdf->Cell(20,7,"Invoice Number",1,0,"C");
+	$pdf->Cell(30,7,"DRIVER",1,0,"C");
+	$pdf->Cell(30,7,"TRUCK ID",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['del_date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$d = $row['packinglist'];
+	$e = $row['invoice_num'];
+	$driver = $row['driver'];
+	$f = substr($driver,0,15);		
+	$g = $row['truck_id'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(50,7,"$b",1,0,"C");
+	$pdf->Cell(20,7,"$c",1,0,"C");
+	$pdf->Cell(20,7,"$d",1,0,"C");
+	$pdf->Cell(20,7,"$e",1,0,"C");
+	$pdf->Cell(30,7,"$f",1,0,"C");
+	$pdf->Cell(30,7,"$g",1,1,"C");
+	
+	
+		}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box:",1,0,"C");
+	$pdf->Cell(30,7,"$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+
+}
+else
+{
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where del_date between '$date' and '$date1' and store='$store' and cancel=0 order by store asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date From :  $date         Date To :  $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Delivered Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(20,7,"Delivered Date",1,0,"C");
+	$pdf->Cell(50,7,"Store Name",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(20,7,"Packing List",1,0,"C");
+	$pdf->Cell(20,7,"Invoice Number",1,0,"C");
+	$pdf->Cell(30,7,"DRIVER",1,0,"C");
+	$pdf->Cell(30,7,"TRUCK ID",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['del_date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$d = $row['packinglist'];
+	$e = $row['invoice_num'];
+	$driver = $row['driver'];
+	$f = substr($driver,0,15);
+	$g = $row['truck_id'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(50,7,"$b",1,0,"C");
+	$pdf->Cell(20,7,"$c",1,0,"C");
+	$pdf->Cell(20,7,"$d",1,0,"C");
+	$pdf->Cell(20,7,"$e",1,0,"C");
+	$pdf->Cell(30,7,"$f",1,0,"C");
+	$pdf->Cell(30,7,"$g",1,1,"C");
+	
+	
+		}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box:",1,0,"C");
+	$pdf->Cell(30,7,"$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+	
+}
+}
+else if($type=='for_verification'){
+if($store==''){
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  date between '$date' and '$date1' and verified=0 and cancel=0 order by store asc ";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date From :  $date         Date To :  $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  For Verification",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(20,7,"Outright Date",1,0,"C");
+	$pdf->Cell(128,7,"Store Name",1,0,"C");
+	$pdf->Cell(45,7,"Box Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(128,7,"$b",1,0,"C");
+	$pdf->Cell(45,7,"$c",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(128,7,"",0,0,"C");
+	$pdf->Cell(45,7,"Total Box:				$h",1,0,"C");	
+}
+$pdf->Output();
+}
+else{
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  date between '$date' and '$date1' and verified=0 and store='$store' and cancel=0 order by store asc,date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date From :  $date         Date To :  $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  For Verification",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(20,7,"Outright Date",1,0,"C");
+	$pdf->Cell(128,7,"Store Name",1,0,"C");
+	$pdf->Cell(45,7,"Box Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(128,7,"$b",1,0,"C");
+	$pdf->Cell(45,7,"$c",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(128,7,"",0,0,"C");
+	$pdf->Cell(45,7,"Total Box:				$h",1,0,"C");
+	
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+}
+else if($type=='for_receipt'){
+if($store==''){
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  date_verified between '$date' and '$date1' and verified =1 and cancel=0 and date_pack=0 order by store asc,date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  For Receipt",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(20,7,"Date Outright",1,0,"C");
+	$pdf->Cell(20,7,"Date Verified",1,0,"C");
+	$pdf->Cell(120,7,"STORE",1,0,"C");
+	$pdf->Cell(30,7,"Box Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$b = $row['date_verified'];
+$store = $row['store'];
+	$c = substr($store,0,28);
+	$d = $row['box_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(20,7,"$b",1,0,"C");
+	$pdf->Cell(120,7,"$c",1,0,"C");
+	$pdf->Cell(30,7,"$d",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box: 					$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+else {
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  date_verified between '$date' and '$date1' and verified =1 and date_pack=0 and backlog=0 and store='$store' and cancel=0 and backlog=0 order by store asc,date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  For Receipt",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(20,7,"Date Outright",1,0,"C");
+	$pdf->Cell(20,7,"Date Verified",1,0,"C");
+	$pdf->Cell(120,7,"STORE",1,0,"C");
+	$pdf->Cell(30,7,"Box Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$b = $row['date_verified'];
+	$store = $row['store'];
+	$c = substr($store,0,28);
+	$d = $row['box_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(20,7,"$b",1,0,"C");
+	$pdf->Cell(120,7,"$c",1,0,"C");
+	$pdf->Cell(30,7,"$d",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box: 					$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+}
+else if($type=='undelivered_items'){
+if ($store==''){
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  for_dil=0 and cancel=0  and date between '$date' and '$date1'  order by store asc,date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Undelivered Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	$pdf->Cell(20,7,"Date Outright",1,0,"C");
+	$pdf->Cell(50,7,"Store",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(20,7,"Date Verified",1,0,"C");
+	$pdf->Cell(20,7,"Date Receipt",1,0,"C");
+	$pdf->Cell(30,7,"Packing List",1,0,"C");
+	$pdf->Cell(30,7,"Invoice Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$d = $row['date_verified'];
+	$e = $row['date_pack'];
+	$f = $row['packinglist'];
+	$g = $row['invoice_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(50,7,"$b",1,0,"C");
+	$pdf->Cell(20,7,"$c",1,0,"C");
+	$pdf->Cell(20,7,"$d",1,0,"C");
+	$pdf->Cell(20,7,"$e",1,0,"C");
+	$pdf->Cell(30,7,"$f",1,0,"C");
+	$pdf->Cell(30,7,"$g",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box:",1,0,"C");
+	$pdf->Cell(30,7,"$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+
+else{
+
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  for_dil=0 and date between '$date' and '$date1' and cancel=0 and store='$store' order by store asc,date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Undelivered Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	$pdf->Cell(20,7,"Date Outright",1,0,"C");
+	$pdf->Cell(50,7,"Store",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(20,7,"Date Verified",1,0,"C");
+	$pdf->Cell(20,7,"Date Receipt",1,0,"C");
+	$pdf->Cell(30,7,"Packing List",1,0,"C");
+	$pdf->Cell(30,7,"Invoice Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$d = $row['date_verified'];
+	$e = $row['date_pack'];
+	$f = $row['packinglist'];
+	$g = $row['invoice_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(50,7,"$b",1,0,"C");
+	$pdf->Cell(20,7,"$c",1,0,"C");
+	$pdf->Cell(20,7,"$d",1,0,"C");
+	$pdf->Cell(20,7,"$e",1,0,"C");
+	$pdf->Cell(30,7,"$f",1,0,"C");
+	$pdf->Cell(30,7,"$g",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box:",1,0,"C");
+	$pdf->Cell(30,7,"$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+}
+else if($type=='backlog'){
+if($store==''){
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  backlog_date between '$date' and '$date1' and backlog_date_dil =0";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$i =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Backlog Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(50,7,"Store Name",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(18,7,"Date Outright",1,0,"C");
+	$pdf->Cell(18,7,"Date Verified",1,0,"C");
+	$pdf->Cell(18,7,"Date Receipt",1,0,"C");
+	$pdf->Cell(23,7,"PackingList",1,0,"C");
+	$pdf->Cell(23,7,"Invoice Number",1,0,"C");
+	$pdf->Cell(20,7,"Backlog Date",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$store = $row['store'];
+	$a = substr($store,0,28);
+	$b = $row['box_num'];
+	$c = $row['date'];
+	$d = $row['date_verified'];
+	$e = $row['date_pack'];
+	$f = $row['packinglist'];
+	$g = $row['invoice_num'];
+	$h = $row['backlog_date'];
+	$pdf->Cell(50,7,"$a",1,0,"C");
+	$pdf->Cell(20,7,"$b",1,0,"C");
+	$pdf->Cell(18,7,"$c",1,0,"C");
+	$pdf->Cell(18,7,"$d",1,0,"C");
+	$pdf->Cell(18,7,"$e",1,0,"C");
+	$pdf->Cell(23,7,"$f",1,0,"C");
+	$pdf->Cell(23,7,"$g",1,0,"C");
+	$pdf->Cell(20,7,"$h",1,1,"C");
+	
+	
+		}
+	$pdf->Cell(170,7,"",0,0,"C");
+	$pdf->Cell(20,7,"Total Box:$i",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+else{
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  backlog_date between '$date' and '$date1' and backlog_date_dil =0 and store='$store'";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$i =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Backlog Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	
+	$pdf->Cell(50,7,"Store Name",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(18,7,"Date Outright",1,0,"C");
+	$pdf->Cell(18,7,"Date Verified",1,0,"C");
+	$pdf->Cell(18,7,"Date Receipt",1,0,"C");
+	$pdf->Cell(23,7,"PackingList",1,0,"C");
+	$pdf->Cell(23,7,"Invoice Number",1,0,"C");
+	$pdf->Cell(20,7,"Backlog Date",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$store = $row['store'];
+	$a = substr($store,0,28);
+	$b = $row['box_num'];
+	$c = $row['date'];
+	$d = $row['date_verified'];
+	$e = $row['date_pack'];
+	$f = $row['packinglist'];
+	$g = $row['invoice_num'];
+	$h = $row['backlog_date'];
+	$pdf->Cell(50,7,"$a",1,0,"C");
+	$pdf->Cell(20,7,"$b",1,0,"C");
+	$pdf->Cell(18,7,"$c",1,0,"C");
+	$pdf->Cell(18,7,"$d",1,0,"C");
+	$pdf->Cell(18,7,"$e",1,0,"C");
+	$pdf->Cell(23,7,"$f",1,0,"C");
+	$pdf->Cell(23,7,"$g",1,0,"C");
+	$pdf->Cell(20,7,"$h",1,1,"C");
+	
+	
+		}
+	$pdf->Cell(170,7,"",0,0,"C");
+	$pdf->Cell(20,7,"Total Box:$i",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+}
+else if($type=='done_receipt'){
+	if ($store==''){
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  for_dil=0 and cancel=0  and date_pack between '$date' and '$date1'  order by store asc,date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Undelivered Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	$pdf->Cell(20,7,"Date Outright",1,0,"C");
+	$pdf->Cell(50,7,"Store",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(20,7,"Date Verified",1,0,"C");
+	$pdf->Cell(20,7,"Date Receipt",1,0,"C");
+	$pdf->Cell(30,7,"Packing List",1,0,"C");
+	$pdf->Cell(30,7,"Invoice Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$d = $row['date_verified'];
+	$e = $row['date_pack'];
+	$f = $row['packinglist'];
+	$g = $row['invoice_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(50,7,"$b",1,0,"C");
+	$pdf->Cell(20,7,"$c",1,0,"C");
+	$pdf->Cell(20,7,"$d",1,0,"C");
+	$pdf->Cell(20,7,"$e",1,0,"C");
+	$pdf->Cell(30,7,"$f",1,0,"C");
+	$pdf->Cell(30,7,"$g",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box:",1,0,"C");
+	$pdf->Cell(30,7,"$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+
+else{
+
+$pdf=new fpdf();
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "outright";
+$conn = new mysqli($servername, $username, $password, $dbname);
+if($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+$sql = "SELECT * FROM outright where  for_dil=0 and date_pack between '$date' and '$date1' and cancel=0 and store='$store' order by store asc,date asc";
+$result = $conn->query($sql);
+$pdf->Addpage();
+$pdf->SetFont("Arial","B","12");
+$h =$result->num_rows;
+	if ($result->num_rows > 0) {
+	$pdf->Image('logo.png',10,10,95,30);
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Delivery Outright Report",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Date FROM :  $date       Date To: $date1",1,1,"C");
+	$pdf->Cell(95,10,"",0,0);
+	$pdf->Cell(0,10,"Type  :  Undelivered Items",1,1,"C");
+	$pdf->SetFont("Arial","","7.5");
+	$pdf->Cell(20,7,"Date Outright",1,0,"C");
+	$pdf->Cell(50,7,"Store",1,0,"C");
+	$pdf->Cell(20,7,"Box Number",1,0,"C");
+	$pdf->Cell(20,7,"Date Verified",1,0,"C");
+	$pdf->Cell(20,7,"Date Receipt",1,0,"C");
+	$pdf->Cell(30,7,"Packing List",1,0,"C");
+	$pdf->Cell(30,7,"Invoice Number",1,1,"C");
+	while($row = $result->fetch_assoc()) {
+	$a = $row['date'];
+	$store = $row['store'];
+	$b = substr($store,0,28);
+	$c = $row['box_num'];
+	$d = $row['date_verified'];
+	$e = $row['date_pack'];
+	$f = $row['packinglist'];
+	$g = $row['invoice_num'];
+	$pdf->Cell(20,7,"$a",1,0,"C");
+	$pdf->Cell(50,7,"$b",1,0,"C");
+	$pdf->Cell(20,7,"$c",1,0,"C");
+	$pdf->Cell(20,7,"$d",1,0,"C");
+	$pdf->Cell(20,7,"$e",1,0,"C");
+	$pdf->Cell(30,7,"$f",1,0,"C");
+	$pdf->Cell(30,7,"$g",1,1,"C");
+	}
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(50,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(20,7,"",0,0,"C");
+	$pdf->Cell(30,7,"Total Box:",1,0,"C");
+	$pdf->Cell(30,7,"$h",1,1,"C");
+	
+	
+		
+		
+}
+$pdf->Output();
+}
+
+}
+?>

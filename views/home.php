@@ -1,0 +1,4 @@
+<div class="container">
+  <h3>DITO ILALAGAY YUNG TITLE</h3>
+  <p>VISION AND MISSION AT KUNG ANO ANO PANG BALAK NIYO ILAGAY.</p>
+</div>
